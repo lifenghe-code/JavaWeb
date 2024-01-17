@@ -1,4 +1,5 @@
 package com.blog.user.controller;
+import com.alibaba.fastjson.JSONObject;
 import com.blog.user.entity.Result;
 import com.blog.user.entity.StatusCode;
 import com.blog.user.pojo.Article;
@@ -13,17 +14,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 @RestController
 @RequestMapping(value = "/article")
 public class ArticleController {
 
-    private static final Long USERID = 11222L;
+
     @Autowired
     private UserService userService;
     @Autowired
@@ -34,9 +35,8 @@ public class ArticleController {
 
     @PostMapping(value = "/delete")
     public Result delete(@RequestBody String returnData){
-        System.out.println(returnData);
+        Long USERID = 11222L;
         String articleId = returnData.split("=")[1];
-        System.out.println(articleId);
         User us = userService.findById(USERID);
         Long articleLibId = us.getArticleLibId();
         ArticleLib articleLib = articleLibService.findById(articleLibId);
@@ -62,9 +62,26 @@ public class ArticleController {
         return new Result<List<ArticleLib>>(true, StatusCode.OK, "删除成功");
     }
     @PostMapping(value = "/comment")
-    public Result comment(@RequestBody String data){
-        System.out.println(data);
-        return new Result<List<ArticleLib>>(true, StatusCode.OK, "删除成功");
+    public Result comment(@RequestBody String returnData) throws ParseException {
+        System.out.println(returnData);
+        JSONObject jsonObject = JSONObject.parseObject(returnData);
+        Long userId = Long.parseLong(jsonObject.get("userId").toString());
+        Long articleId = Long.parseLong(jsonObject.get("articleId").toString());
+        String comment = jsonObject.get("comment").toString();
+        String date = jsonObject.get("date").toString();
+
+        HashMap<String, String> commentData = new HashMap<String, String>();
+        User us = userService.findById(userId);
+        commentData.put("userId",us.getId().toString());
+        commentData.put("userName",us.getName());
+        commentData.put("date",date);
+        commentData.put("comment",comment);
+        Article ar = articleService.findById(articleId);
+        String currentComments = ar.getComments();
+        ar.setComments(currentComments + commentData.toString());
+        System.out.println(currentComments + commentData.toString());
+        articleService.update(ar);
+        return new Result<List<ArticleLib>>(true, StatusCode.OK, "添加评论成功", commentData);
 
     }
 

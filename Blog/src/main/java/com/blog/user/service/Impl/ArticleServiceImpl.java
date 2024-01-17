@@ -28,7 +28,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void update(Article article) {
-        articleMapper.updateByPrimaryKeySelective(article);
+        articleMapper.updateByPrimaryKey(article);
     }
     @Override
     public List<Article> findByDate(){

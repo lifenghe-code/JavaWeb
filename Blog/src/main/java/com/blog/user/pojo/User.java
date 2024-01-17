@@ -24,7 +24,7 @@ public class User implements Serializable{
     public void setPassWord(String PassWord) {
         this.passWord = PassWord;
     }
-    public long getId() {
+    public Long getId() {
         return id;
     }
     public String getName() {
