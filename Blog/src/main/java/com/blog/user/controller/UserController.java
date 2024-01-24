@@ -105,6 +105,9 @@ public class UserController {
         }
         else{
             USERID = us.getId();
+            if(!us.getStatus()){
+                return new Result<List<User>>(false, StatusCode.ERROR, "账号被冻结");
+            }
             System.out.println("UserID:"+USERID);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("id",USERID.toString());
