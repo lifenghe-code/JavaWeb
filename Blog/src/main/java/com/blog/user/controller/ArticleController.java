@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Null;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -63,26 +64,51 @@ public class ArticleController {
     }
     @PostMapping(value = "/comment")
     public Result comment(@RequestBody String returnData) throws ParseException {
-        System.out.println(returnData);
         JSONObject jsonObject = JSONObject.parseObject(returnData);
+
         Long userId = Long.parseLong(jsonObject.get("userId").toString());
         Long articleId = Long.parseLong(jsonObject.get("articleId").toString());
         String comment = jsonObject.get("comment").toString();
         String date = jsonObject.get("date").toString();
-
-        HashMap<String, String> commentData = new HashMap<String, String>();
+        JSONObject commentData = new JSONObject();
+        // HashMap<String, String> commentData = new HashMap<String, String>();
         User us = userService.findById(userId);
         commentData.put("userId",us.getId().toString());
         commentData.put("userName",us.getName());
         commentData.put("date",date);
         commentData.put("comment",comment);
         Article ar = articleService.findById(articleId);
-        String currentComments = ar.getComments();
-        ar.setComments(currentComments + commentData.toString());
-        System.out.println(currentComments + commentData.toString());
+        if(ar.getComments()==null){
+            ar.setComments(commentData.toString());
+        }
+        else {
+            ar.setComments(ar.getComments() + "," + commentData.toString());
+        }
         articleService.update(ar);
         return new Result<List<ArticleLib>>(true, StatusCode.OK, "添加评论成功", commentData);
 
     }
+    @PostMapping(value = "/showComments")
+    public Result showComments(@RequestBody String returnData) throws ParseException {
+        System.out.println(returnData);
+        JSONObject jsonObject = JSONObject.parseObject(returnData);
+        System.out.println(jsonObject);
+        Long userId = Long.parseLong(jsonObject.get("userId").toString());
+        Long articleId = Long.parseLong(jsonObject.get("articleId").toString());
+        JSONObject commentData = new JSONObject();
+        // HashMap<String, String> commentData = new HashMap<String, String>();
+        User us = userService.findById(userId);
+        Article ar = articleService.findById(articleId);
+        commentData.put("userId",us.getId().toString());
+        commentData.put("userName",us.getName());
+        commentData.put("articleId",ar.getId().toString());
+        commentData.put("articleTitle",ar.getTitle());
+        commentData.put("authorId",ar.getAuthorId().toString());
+        commentData.put("authorName",ar.getAuthorName());
+        commentData.put("date",ar.getDate().toString());
+        commentData.put("content", ar.getContent());
+        commentData.put("comments", ar.getComments());
+        return new Result<List<ArticleLib>>(true, StatusCode.OK, "更新评论成功", commentData);
 
+    }
 }

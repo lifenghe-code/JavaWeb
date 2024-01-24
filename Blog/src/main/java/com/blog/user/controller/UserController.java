@@ -201,11 +201,13 @@ public class UserController {
         for(int i = 0; i<atrticleIds.size(); i++){
             Map<String, String> map = new HashMap<String, String>();
             Article article = articleService.findById(atrticleIds.get(i));
+            map.put("ArticleId", atrticleIds.get(i).toString());
             map.put("Title", article.getTitle());
             map.put("Content", article.getContent());
-            //System.out.println(article.getDate().toString());
             map.put("Date", article.getDate().toString());
-            map.put("Id", article.getId().toString());
+            map.put("AuthorName", article.getAuthorName());
+            map.put("AuthorId", article.getAuthorId().toString());
+            map.put("Comments", article.getComments());
             returnData.add(map);
         }
         // String returnData = JSON.toJSONString(map);
