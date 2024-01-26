@@ -17,5 +17,5 @@ mybatis:
 redis:
   host: 127.0.0.1 # redis地址
   port: 6379 # 端口号
-  password:  # 密码
+  password: 123456 # 密码
   timeout: 3000 # 连接超时时间，单位毫秒

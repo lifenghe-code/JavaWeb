@@ -1,4 +1,4 @@
-package com.blog.manegement.entity;
+package com.blog.admin.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 

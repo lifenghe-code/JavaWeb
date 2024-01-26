@@ -23,6 +23,21 @@ public class Article implements Serializable {
     private Long authorId;
     @Column(name = "Comments")
     private String comments;
+
+    public void setDate(Timestamp date) {
+        this.date = date;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    @Column(name = "Status")
+    private boolean status = true;
     public Long getAuthorId() {
         return authorId;
     }

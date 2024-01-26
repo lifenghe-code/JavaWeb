@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blog.admin.dao.OmnibusMapper">
+    <select id="countUser" resultType="Integer">
+        <!-- 如果函数得params为空，该参数就不用出现在上述；返回如果是列表那么resultType只写元素的类型-->
+        select count(*) from user;
+    </select>
+    <select id="countArticle" resultType="Integer">
+        <!-- 如果函数得params为空，该参数就不用出现在上述；返回如果是列表那么resultType只写元素的类型-->
+        select count(*) from article;
+    </select>
+</mapper>
