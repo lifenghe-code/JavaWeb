@@ -1,5 +1,6 @@
 package com.blog.user.controller;
 import com.alibaba.fastjson.JSONObject;
+import com.blog.tools.Redis.RedisUtil;
 import com.blog.user.entity.Result;
 import com.blog.user.entity.StatusCode;
 import com.blog.user.pojo.ArticleLib;
@@ -52,5 +53,9 @@ public class ChatController {
         List<Message> Data = messageService.findByDate();
         return new Result<List<ArticleLib>>(true, StatusCode.OK, "消息发送成功",Data);
     }
-
+    @PostMapping("/messageRedis")
+    public Result messageRedis() {
+        RedisUtil Data = messageService.findAllRedis();
+        return new Result<List<ArticleLib>>(true, StatusCode.OK, "获取消息成功",Data.getAll());
+    }
 }
