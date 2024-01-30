@@ -1,6 +1,8 @@
 package com.blog.admin.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.blog.admin.entity.Result;
+import com.blog.admin.pojo.Admin;
+import com.blog.admin.service.AdminService;
 import com.blog.user.entity.StatusCode;
 import com.blog.user.pojo.Article;
 import com.blog.user.pojo.User;
@@ -20,7 +22,14 @@ public class AdminController {
     @Autowired
     private UserService userService;
     @Autowired
+    private AdminService adminService;
+    @Autowired
     private ArticleService articleService;
+    @PostMapping(value = "/allAdmins")
+    public Result allAdmins(){
+        List<Admin> adminList =  adminService.selectAll();
+        return new Result<List<User>>(true, StatusCode.OK, "查询成功", adminList);
+    }
     @PostMapping(value = "/allUsers")
     public Result allUsers(){
         List<User> data =  userService.findAll();
@@ -34,13 +43,12 @@ public class AdminController {
 
     }
     @PostMapping(value = "/comments")
-    public Result connemts(@RequestBody String data){
+    public Result comments(@RequestBody String data){
         JSONObject jsonObject = JSONObject.parseObject(data);
         Long userId = Long.parseLong(jsonObject.get("userId").toString());
         Long articleId = Long.parseLong(jsonObject.get("articleId").toString());
         String comment = jsonObject.get("comment").toString();
         String date = jsonObject.get("date").toString();
         return new Result<List<User>>(true, StatusCode.OK, "查询成功", data);
-
     }
 }
