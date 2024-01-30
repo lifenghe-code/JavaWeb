@@ -20,7 +20,7 @@ public class AdminServiceImpl implements AdminService {
     private RedisTemplate<String, List<Admin>> redisTemplate;
     @Override
     public List<Admin> selectAll() {
-
+        // 初级版本，设置过期时间为5s
         List<Admin> adminList = redisTemplate.boundValueOps("adminList").get();
         //2、缓存没有查询数据库，并把数据加入缓存
         if(adminList == null || adminList.size() < 1){
