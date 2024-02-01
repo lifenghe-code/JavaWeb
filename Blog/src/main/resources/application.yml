@@ -13,7 +13,7 @@ mybatis:
   configuration:
    map-underscore-to-camel-case: true
   mapper-locations: classpath:mapper/*Mapper.xml
-  type-aliases-package: com.blog.user.pojo
+  type-aliases-packagetype-aliases-package: com.blog.user.pojo, com.blog.admin.pojo
 redis:
   host: 127.0.0.1 # redis地址
   port: 6379 # 端口号
