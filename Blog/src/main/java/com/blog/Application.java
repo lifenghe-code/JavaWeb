@@ -9,7 +9,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication
 @EnableEurekaClient   //开启Eureka客户端
-@MapperScan(basePackages = {"com.blog.user.dao"})
+// Mapper包扫描放到application.yml配置文件中了
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class);
