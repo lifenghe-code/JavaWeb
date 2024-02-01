@@ -14,6 +14,7 @@ public interface AdminService {
      * @return
      */
     Admin findById(Long id);
+    Admin findAdminByName(String name);
     Admin findByAdmin(Admin admin);
     // 增加商品
     void add(Admin admin);

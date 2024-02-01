@@ -6,7 +6,6 @@ import com.blog.admin.service.AdminService;
 import com.blog.tools.Redis.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -32,7 +31,22 @@ public class AdminServiceImpl implements AdminService {
         }
         return adminList;
     }
-
+    @Override
+    public Admin findAdminByName(String name) {
+        List<Admin> adminList = redisTemplate.boundValueOps("adminList").get();
+        //2、缓存没有查询数据库，并把数据加入缓存
+        if(adminList == null || adminList.size() < 1){
+            adminList = adminMapper.selectAll();
+            //把数据加入缓存，设置有效时间为5秒
+            redisTemplate.boundValueOps("adminList").set(adminList,5,TimeUnit.SECONDS);
+        }
+        for(Admin admin:adminList){
+            if(admin.getName().equals(name)){
+                return admin;
+            }
+        }
+        return adminMapper.findAdminByName(name);
+    }
     @Override
     public Admin findById(Long id) {
         return null;
