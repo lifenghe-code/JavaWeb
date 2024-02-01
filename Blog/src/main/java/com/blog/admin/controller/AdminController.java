@@ -25,6 +25,16 @@ public class AdminController {
     private AdminService adminService;
     @Autowired
     private ArticleService articleService;
+    @PostMapping(value = "/login")
+    public Result login(String Name, String PassWord){
+        Admin admin = adminService.findAdminByName(Name);
+        if(admin!=null){
+            return new Result<List<User>>(true, StatusCode.OK, "登录成功", admin);
+        }
+        else {
+            return new Result<List<User>>(true, StatusCode.OK, "不存在该用户");
+        }
+    }
     @PostMapping(value = "/allAdmins")
     public Result allAdmins(){
         List<Admin> adminList =  adminService.selectAll();
